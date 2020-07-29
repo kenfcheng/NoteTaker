@@ -3,8 +3,8 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
-const port = 8080;
-const mainDir = path.join(__dirname, "/public");
+var PORT = process.env.PORT || 3001;
+const mainDir = path.join(__dirname, "/Develop/public");
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +25,7 @@ app.get("/api/notes/:id", function (req, res) {
 });
 
 app.get("*", function (req, res) {
-  res.sendFile(path.join(mainDir, "index.html"));
+  res.sendFile(path.join(mainDir, "/index.html"));
 });
 
 /* POST: Receives a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client. */
@@ -44,6 +44,6 @@ app.post("/api/notes", function (req, res) {
 
 /* DELETE: receive a query parameter containing the id of a note to delete. */
 
-app.listen(port, function () {
-  console.log(`Now listening to port ${port}. Enjoy your stay!`);
+app.listen(PORT, function () {
+  console.log(`Now listening to port ${PORT}. We Heard You!`);
 });
