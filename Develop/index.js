@@ -27,3 +27,23 @@ app.get("/api/notes/:id", function (req, res) {
 app.get("*", function (req, res) {
   res.sendFile(path.join(mainDir, "index.html"));
 });
+
+/* POST: Receives a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client. */
+
+app.post("/api/notes", function (req, res) {
+  let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+  let newNote = req.body;
+  let uniqueID = savedNotes.length.toString();
+  newNote.id = uniqueID;
+  savedNotes.push(newNote);
+
+  fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
+  console.log("Note saved to db.json. Content: ", newNote);
+  res.json(savedNotes);
+});
+
+/* DELETE: receive a query parameter containing the id of a note to delete. */
+
+app.listen(port, function () {
+  console.log(`Now listening to port ${port}. Enjoy your stay!`);
+});
