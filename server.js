@@ -4,6 +4,7 @@ const fs = require("fs");
 
 const app = express();
 var PORT = process.env.PORT || 3001;
+// const PORT = 3001;
 const mainDir = path.join(__dirname, "/Develop/public");
 
 app.use(express.static("public"));
