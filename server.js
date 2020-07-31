@@ -13,7 +13,7 @@ app.use(express.json());
 
 /* GET: Reads 'db.json' file and return all saved notes as JSON */
 app.get("/notes", function (req, res) {
-  res.sendFile(path.join(mainDir, "notes.html"));
+  res.sendFile(path.join(mainDir, "/notes.html"));
 });
 
 app.get("/api/notes", function (req, res) {
