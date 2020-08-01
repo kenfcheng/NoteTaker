@@ -5,19 +5,19 @@ const fs = require("fs");
 const app = express();
 var PORT = process.env.PORT || 3001;
 // const PORT = 3001;
-const mainDir = path.join(__dirname, "/Develop/public");
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const mainDir = path.join(__dirname, "/public");
 /* GET: Reads 'db.json' file and return all saved notes as JSON */
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(mainDir, "/notes.html"));
 });
 
 app.get("/api/notes", function (req, res) {
-  res.sendFile(path.join(__dirname, "/db/db.json"));
+  res.sendFile(path.join(__dirname, "./db/db.json"));
 });
 
 app.get("/api/notes/:id", function (req, res) {
@@ -34,8 +34,8 @@ app.get("*", function (req, res) {
 app.post("/api/notes", function (req, res) {
   let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
   let newNote = req.body;
-  let uniqueID = savedNotes.length.toString();
-  newNote.id = uniqueID;
+  let NewID = savedNotes.length.toString();
+  newNote.id = NewID;
   savedNotes.push(newNote);
 
   fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
@@ -43,8 +43,27 @@ app.post("/api/notes", function (req, res) {
   res.json(savedNotes);
 });
 
-/* DELETE: receive a query parameter containing the id of a note to delete. */
-
 app.listen(PORT, function () {
   console.log(`Now listening to port ${PORT}. We Heard You!`);
+});
+
+/* DELETE: receive a query parameter containing the id of a note to delete. */
+app.delete("/api/notes/:id", function (req, res) {
+  try {
+    notesData = fs.readFileSync("./db/db.json", "utf8");
+    notesData = JSON.parse(notesData);
+    notesData = notesData.filter(function (note) {
+      return note.id != req.params.id;
+    });
+    notesData = JSON.stringify(notesData);
+
+    fs.writeFile("./db/db.json", notesData, "utf8", function (err) {
+      if (err) throw err;
+    });
+
+    res.send(JSON.parse(notesData));
+  } catch (err) {
+    throw err;
+    console.log(err);
+  }
 });
