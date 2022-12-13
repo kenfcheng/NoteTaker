@@ -10,7 +10,7 @@
     "axios": "^0.19.2",
     "inquirer": "^7.3.3",
     "nodemon": "^2.0.4",
-    "express": "^4.16.3"
+    "express": "^4.17.3"
   },
   "devDependencies": {},
   "scripts": {
